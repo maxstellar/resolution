@@ -1,11 +1,11 @@
 import { redirect } from '@sveltejs/kit';
 import { hackClubAuth, lucia } from '$lib/server/auth';
 import { db } from '$lib/server/db';
-import { user, programSeason } from '$lib/server/db/schema';
+import { user, programSeason, referralLink, referralSignup, userPathway } from '$lib/server/db/schema';
 import { env } from '$env/dynamic/private';
 import { generateIdFromEntropySize } from 'lucia';
 import { EnrollmentService } from '$lib/server/services';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 
 export const GET = async ({ url, cookies, locals }) => {
   const code = url.searchParams.get('code');
@@ -79,6 +79,38 @@ export const GET = async ({ url, cookies, locals }) => {
 
     if (activeSeason) {
       await EnrollmentService.enrollParticipant(dbUser.id, activeSeason.slug);
+    }
+
+    // Handle referral code
+    const referralCode = cookies.get('referral_code');
+    if (referralCode) {
+      const refLink = await db.query.referralLink.findFirst({
+        where: and(
+          eq(referralLink.code, referralCode),
+          eq(referralLink.isActive, true)
+        )
+      });
+
+      if (refLink) {
+        // Auto-add the pathway
+        await db.insert(userPathway)
+          .values({
+            userId: dbUser.id,
+            pathway: refLink.pathway
+          })
+          .onConflictDoNothing();
+
+        // Record the referral signup
+        await db.insert(referralSignup)
+          .values({
+            referralLinkId: refLink.id,
+            userId: dbUser.id
+          })
+          .onConflictDoNothing();
+      }
+
+      // Clear the referral cookie
+      cookies.delete('referral_code', { path: '/' });
     }
 
     throw redirect(302, '/auth/complete');

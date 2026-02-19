@@ -35,8 +35,16 @@
 		</a>
 
 		<header>
-			<h1>Ambassador Dashboard</h1>
-			<p class="subtitle">Manage your pathway content</p>
+			<div class="header-top">
+				<div>
+					<h1>Ambassador Dashboard</h1>
+					<p class="subtitle">Manage your pathway content</p>
+				</div>
+				<a href="/app/ambassador/referrals" class="referrals-btn">
+					<img src="https://icons.hackclub.com/api/icons/a633d6/share" alt="Referrals" width="18" height="18" />
+					Referral Links
+				</a>
+			</div>
 		</header>
 
 		{#if data.assignments.length === 0}
@@ -114,6 +122,13 @@
 		margin-bottom: 2rem;
 	}
 
+	.header-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
 	h1 {
 		font-size: 1.75rem;
 		margin: 0 0 0.5rem 0;
@@ -122,6 +137,25 @@
 	.subtitle {
 		color: #8492a6;
 		margin: 0;
+	}
+
+	.referrals-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: rgba(255, 255, 255, 0.8);
+		border: 1px solid #a633d6;
+		color: #a633d6;
+		border-radius: 20px;
+		font-family: 'Kodchasan', sans-serif;
+		text-decoration: none;
+		white-space: nowrap;
+		font-size: 0.9rem;
+	}
+
+	.referrals-btn:hover {
+		background: rgba(255, 255, 255, 1);
 	}
 
 	.empty-state {

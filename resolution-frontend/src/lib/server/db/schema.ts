@@ -147,8 +147,9 @@ export const userRelations = relations(user, ({ many }) => ({
   workshops: many(workshop),
   completions: many(workshopCompletion),
   weeklyShips: many(weeklyShip),
-  payouts: many(ambassadorPayout)
-}));
+  payouts: many(ambassadorPayout),
+  referralLinks: many(referralLink)
+  }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
   user: one(user, { fields: [session.userId], references: [user.id] })
@@ -233,6 +234,25 @@ export const pathwayWeekContent = pgTable('pathway_week_content', {
 	uniqueIndex('pathway_week_content_unique_idx').on(table.pathway, table.weekNumber)
 ]);
 
+export const referralLink = pgTable('referral_link', {
+	id: text('id').primaryKey().$defaultFn(() => createId()),
+	ambassadorId: text('ambassador_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+	pathway: pathwayEnum('pathway').notNull(),
+	code: text('code').notNull().unique(),
+	label: text('label'),
+	isActive: boolean('is_active').notNull().default(true),
+	createdAt: timestamp('created_at', { mode: 'date' }).notNull().defaultNow()
+});
+
+export const referralSignup = pgTable('referral_signup', {
+	id: text('id').primaryKey().$defaultFn(() => createId()),
+	referralLinkId: text('referral_link_id').notNull().references(() => referralLink.id, { onDelete: 'cascade' }),
+	userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+	createdAt: timestamp('created_at', { mode: 'date' }).notNull().defaultNow()
+}, (table) => [
+	uniqueIndex('referral_signup_unique_idx').on(table.referralLinkId, table.userId)
+]);
+
 export const ambassadorPathwayRelations = relations(ambassadorPathway, ({ one }) => ({
 	user: one(user, { fields: [ambassadorPathway.userId], references: [user.id] }),
 	assignedByUser: one(user, { fields: [ambassadorPathway.assignedBy], references: [user.id] })
@@ -240,4 +260,14 @@ export const ambassadorPathwayRelations = relations(ambassadorPathway, ({ one })
 
 export const pathwayWeekContentRelations = relations(pathwayWeekContent, ({ one }) => ({
 	editor: one(user, { fields: [pathwayWeekContent.lastEditedBy], references: [user.id] })
+}));
+
+export const referralLinkRelations = relations(referralLink, ({ one, many }) => ({
+	ambassador: one(user, { fields: [referralLink.ambassadorId], references: [user.id] }),
+	signups: many(referralSignup)
+}));
+
+export const referralSignupRelations = relations(referralSignup, ({ one }) => ({
+	referralLink: one(referralLink, { fields: [referralSignup.referralLinkId], references: [referralLink.id] }),
+	user: one(user, { fields: [referralSignup.userId], references: [user.id] })
 }));
