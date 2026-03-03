@@ -46,7 +46,7 @@ export const actions: Actions = {
 
 		const pathways = JSON.parse(pathwaysJson) as string[];
 
-		const validPathways = ['PYTHON', 'WEB_DEV', 'GAME_DEV', 'HARDWARE', 'DESIGN', 'GENERAL_CODING'];
+		const validPathways = ['PYTHON', 'RUST', 'GAME_DEV', 'HARDWARE', 'DESIGN', 'GENERAL_CODING'];
 		if (!pathways.every((p) => validPathways.includes(p))) {
 			return fail(400, { error: 'Invalid pathway selected' });
 		}
@@ -57,7 +57,7 @@ export const actions: Actions = {
 			await db.insert(userPathway).values(
 				pathways.map((pathway) => ({
 					userId: user.id,
-					pathway: pathway as 'PYTHON' | 'WEB_DEV' | 'GAME_DEV' | 'HARDWARE' | 'DESIGN' | 'GENERAL_CODING'
+					pathway: pathway as 'PYTHON' | 'RUST' | 'GAME_DEV' | 'HARDWARE' | 'DESIGN' | 'GENERAL_CODING'
 				}))
 			);
 		}
