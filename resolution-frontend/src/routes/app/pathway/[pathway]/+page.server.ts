@@ -23,6 +23,10 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 		throw error(404, 'Pathway not found');
 	}
 
+	if (pathwayId === 'RUST') {
+		throw redirect(302, 'https://forms.hackclub.com/rust');
+	}
+
 	const userPathwayRecord = await db
 		.select()
 		.from(userPathway)

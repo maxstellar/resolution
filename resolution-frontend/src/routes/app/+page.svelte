@@ -100,7 +100,9 @@
 							</button>
 						{:else if isSelected}
 							<a
-								href="/app/pathway/{pathway.id.toLowerCase()}"
+								href={pathway.id === 'RUST' ? 'https://forms.hackclub.com/rust' : `/app/pathway/${pathway.id.toLowerCase()}`}
+								target={pathway.id === 'RUST' ? '_blank' : undefined}
+								rel={pathway.id === 'RUST' ? 'noopener noreferrer' : undefined}
 								class="option-card selected"
 							>
 								<img
