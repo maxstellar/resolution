@@ -16,10 +16,6 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 		throw error(404, 'Pathway not found');
 	}
 
-	if (pathwayId === 'RUST') {
-		throw redirect(302, 'https://forms.hackclub.com/rust');
-	}
-
 	if (isNaN(weekNumber) || weekNumber < 1 || weekNumber > 8) {
 		throw error(404, 'Invalid week number');
 	}
