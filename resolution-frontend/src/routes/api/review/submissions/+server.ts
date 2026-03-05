@@ -6,6 +6,7 @@ import { requireAuth } from '$lib/server/auth/guard';
 import { db } from '$lib/server/db';
 import { reviewerPathway } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
+import { PATHWAY_IDS } from '$lib/pathways';
 
 export const GET: RequestHandler = async (event) => {
 	const { user } = requireAuth(event);
@@ -31,6 +32,9 @@ export const GET: RequestHandler = async (event) => {
 		let pathwaysToQuery: string[];
 
 		if (pathwayParam) {
+			if (!PATHWAY_IDS.includes(pathwayParam as typeof PATHWAY_IDS[number])) {
+				return json({ error: 'Invalid pathway' }, { status: 400 });
+			}
 			if (!user.isAdmin && !assignedPathways.includes(pathwayParam as typeof assignedPathways[number])) {
 				return json({ error: 'You do not have reviewer access to this pathway' }, { status: 403 });
 			}
