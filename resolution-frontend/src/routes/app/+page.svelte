@@ -2,17 +2,11 @@
 	import type { PageData } from './$types';
 	import PlatformBackground from '$lib/components/PlatformBackground.svelte';
 	import { enhance } from '$app/forms';
+	import { PATHWAYS } from '$lib/pathways';
 
 	let { data }: { data: PageData } = $props();
 
-	const pathways = [
-		{ id: 'PYTHON', label: 'Python', icon: 'terminal', color: 'ec3750' },
-		{ id: 'RUST', label: 'Rust', icon: 'terminal', color: '338eda' },
-		{ id: 'GAME_DEV', label: 'Game Dev', icon: 'controls', color: '33d6a6' },
-		{ id: 'HARDWARE', label: 'Hardware', icon: 'settings', color: 'ff8c37' },
-		{ id: 'DESIGN', label: 'Design', icon: 'idea', color: 'a633d6' },
-		{ id: 'GENERAL_CODING', label: 'General Coding', icon: 'code', color: '5bc0de' }
-	];
+	const pathways = PATHWAYS;
 
 	let selectedPathways = $state<string[]>([]);
 	let isEditing = $state(true);

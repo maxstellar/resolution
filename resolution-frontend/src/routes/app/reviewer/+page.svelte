@@ -2,6 +2,8 @@
 	import type { PageData } from './$types';
 	import PlatformBackground from '$lib/components/PlatformBackground.svelte';
 
+	import { PATHWAY_INFO, PATHWAY_IDS } from '$lib/pathways';
+
 	let { data }: { data: PageData } = $props();
 
 	interface Submission {
@@ -20,16 +22,9 @@
 		submittedAt: string;
 	}
 
-	const pathwayInfo: Record<string, { label: string; color: string }> = {
-		PYTHON: { label: 'Python', color: 'ec3750' },
-		RUST: { label: 'Rust', color: '338eda' },
-		GAME_DEV: { label: 'Game Dev', color: '33d6a6' },
-		HARDWARE: { label: 'Hardware', color: 'ff8c37' },
-		DESIGN: { label: 'Design', color: 'a633d6' },
-		GENERAL_CODING: { label: 'General Coding', color: '5bc0de' }
-	};
+	const pathwayInfo = PATHWAY_INFO;
 
-	const allPathways = ['PYTHON', 'RUST', 'GAME_DEV', 'HARDWARE', 'DESIGN', 'GENERAL_CODING'];
+	const allPathways = PATHWAY_IDS;
 	const availablePathways = $derived(data.isAdmin ? allPathways : data.assignments);
 
 	let submissions = $state<Submission[]>([]);

@@ -12,16 +12,11 @@
 		footer?: Snippet;
 	}
 
+	import { PATHWAY_INFO } from '$lib/pathways';
+
 	let { pathwayId, weekNumber, title, content, renderers = {}, footer }: Props = $props();
 
-	const pathwayInfo: Record<string, { label: string; icon: string; color: string }> = {
-		PYTHON: { label: 'Python', icon: 'terminal', color: 'ec3750' },
-		RUST: { label: 'Rust', icon: 'terminal', color: '338eda' },
-		GAME_DEV: { label: 'Game Dev', icon: 'controls', color: '33d6a6' },
-		HARDWARE: { label: 'Hardware', icon: 'settings', color: 'ff8c37' },
-		DESIGN: { label: 'Design', icon: 'idea', color: 'a633d6' },
-		GENERAL_CODING: { label: 'General Coding', icon: 'code', color: '5bc0de' }
-	};
+	const pathwayInfo = PATHWAY_INFO;
 
 	const pathway = $derived(pathwayInfo[pathwayId]);
 </script>

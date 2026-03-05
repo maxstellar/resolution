@@ -3,6 +3,7 @@ import { db } from '$lib/server/db';
 import { userPathway, ambassadorPathway, reviewerPathway } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { fail } from '@sveltejs/kit';
+import { PATHWAY_IDS } from '$lib/pathways';
 
 export const load: PageServerLoad = async ({ parent }) => {
 	const { user, season, enrollment } = await parent();
@@ -52,7 +53,7 @@ export const actions: Actions = {
 
 		const pathways = JSON.parse(pathwaysJson) as string[];
 
-		const validPathways = ['PYTHON', 'RUST', 'GAME_DEV', 'HARDWARE', 'DESIGN', 'GENERAL_CODING'];
+		const validPathways = PATHWAY_IDS;
 		if (!pathways.every((p) => validPathways.includes(p))) {
 			return fail(400, { error: 'Invalid pathway selected' });
 		}

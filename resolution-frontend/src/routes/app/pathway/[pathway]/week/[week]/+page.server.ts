@@ -3,9 +3,10 @@ import { db } from '$lib/server/db';
 import { userPathway, pathwayWeekContent } from '$lib/server/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { redirect, error } from '@sveltejs/kit';
+import { PATHWAY_IDS, type PathwayId } from '$lib/pathways';
 
-const validPathways = ['PYTHON', 'RUST', 'GAME_DEV', 'HARDWARE', 'DESIGN', 'GENERAL_CODING'] as const;
-type Pathway = typeof validPathways[number];
+const validPathways = PATHWAY_IDS;
+type Pathway = PathwayId;
 
 export const load: PageServerLoad = async ({ params, parent }) => {
 	const { user } = await parent();

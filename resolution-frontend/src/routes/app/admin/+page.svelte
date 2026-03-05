@@ -5,19 +5,14 @@
 
 	let { data }: { data: PageData } = $props();
 
+	import { PATHWAY_LABELS } from '$lib/pathways';
+
 	let searchQuery = $state('');
 	let confirmDelete = $state<string | null>(null);
 	let ambassadorModal = $state<{ userId: string; userName: string } | null>(null);
 	let reviewerModal = $state<{ userId: string; userName: string } | null>(null);
 
-	const pathwayLabels: Record<string, string> = {
-		PYTHON: 'Python',
-		RUST: 'Rust',
-		GAME_DEV: 'Game Dev',
-		HARDWARE: 'Hardware',
-		DESIGN: 'Design',
-		GENERAL_CODING: 'General Coding'
-	};
+	const pathwayLabels = PATHWAY_LABELS;
 
 	const filteredUsers = $derived(
 		data.users.filter(
@@ -28,11 +23,11 @@
 		)
 	);
 
-	function getUserAmbassadorPathways(userId: string) {
+	function getUserAmbassadorPathways(userId: string): string[] {
 		return data.ambassadorsByUser[userId] || [];
 	}
 
-	function getUserReviewerPathways(userId: string) {
+	function getUserReviewerPathways(userId: string): string[] {
 		return data.reviewersByUser[userId] || [];
 	}
 </script>
