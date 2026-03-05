@@ -19,6 +19,8 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 		throw error(404, 'Pathway not found');
 	}
 
+	const typedPathwayId = pathwayId as PathwayId;
+
 	const userPathwayRecord = await db
 		.select()
 		.from(userPathway)
