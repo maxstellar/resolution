@@ -20,6 +20,7 @@
 		hackatimeProject: string;
 		githubUsername: string;
 		hoursSpent: number | null;
+		slackId: string | null;
 		submittedAt: string;
 	}
 
@@ -204,6 +205,12 @@
 								<span class="hours-label">
 									<img src="https://icons.hackclub.com/api/icons/8492a6/clock" alt="Hours" width="16" height="16" />
 									{submission.hoursSpent}h reported
+								</span>
+							{/if}
+							{#if submission.slackId}
+								<span class="slack-label">
+									<img src="https://icons.hackclub.com/api/icons/8492a6/slack" alt="Slack" width="16" height="16" />
+									{submission.slackId}
 								</span>
 							{/if}
 						</div>
