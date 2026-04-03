@@ -86,11 +86,22 @@
 			const result = deserialize(await response.text());
 
 			if (result.type !== 'success') {
-				uploadError = result.data?.error || 'Failed to upload image.';
+				const resultData =
+					'data' in result && result.data && typeof result.data === 'object'
+						? (result.data as Record<string, unknown>)
+						: null;
+				uploadError =
+					typeof resultData?.error === 'string'
+						? resultData.error
+						: 'Failed to upload image.';
 				return;
 			}
 
-			const uploadedUrl = result.data?.url;
+			const successData =
+				result.data && typeof result.data === 'object'
+					? (result.data as Record<string, unknown>)
+					: null;
+			const uploadedUrl = successData?.url;
 			if (!uploadedUrl || typeof uploadedUrl !== 'string') {
 				uploadError = 'Upload succeeded but no URL was returned.';
 				return;
